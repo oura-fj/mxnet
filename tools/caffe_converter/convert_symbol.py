@@ -48,10 +48,15 @@ def convParamToString(param):
         dilate = param.dilation
     else:
         dilate = 1 if len(param.dilation) == 0 else param.dilation[0]
+    num_group = 1 
+    if isinstance(param.group, int):
+        num_group = param.group
+    else:
+        num_group = 1 
     # convert to string except for dilation
-    param_string = "num_filter=%d, pad=(%d,%d), kernel=(%d,%d), stride=(%d,%d), no_bias=%s" %\
+    param_string = "num_filter=%d, pad=(%d,%d), kernel=(%d,%d), stride=(%d,%d), num_group=%d, no_bias=%s" %\
         (param.num_output, pad, pad, kernel_size,\
-        kernel_size, stride, stride, not param.bias_term)
+        kernel_size, stride, stride, num_group, not param.bias_term)
     # deal with dilation. Won't be in deconvolution
     if dilate > 1:
         param_string += ", dilate=(%d, %d)" % (dilate, dilate)
